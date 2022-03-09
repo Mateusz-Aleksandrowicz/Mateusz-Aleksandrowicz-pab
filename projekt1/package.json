@@ -1,0 +1,20 @@
+{
+  "name": "Mateusz-Aleksandrowicz-pab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mateusz-Aleksandrowicz/Mateusz-Aleksandrowicz-pab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mateusz-Aleksandrowicz/Mateusz-Aleksandrowicz-pab/issues"
+  },
+  "homepage": "https://github.com/Mateusz-Aleksandrowicz/Mateusz-Aleksandrowicz-pab#readme"
+}
