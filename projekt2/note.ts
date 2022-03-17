@@ -3,5 +3,5 @@ export class Note {
     content: string
     createDate?: string
     tags?: string[]
-    id?: number
+    id?: string
 }

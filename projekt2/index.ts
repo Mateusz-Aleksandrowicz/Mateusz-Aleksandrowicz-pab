@@ -1,7 +1,8 @@
 import express from 'express'
 import { Request, Response } from 'express'
-import { Note } from '/GithubRepositories/Mateusz-Aleksandrowicz-pab/projekt2/note'
+import { Note } from './note'
 import { v4 as uuidv4 } from 'uuid'
+import { parse } from 'path'
 
 const app = express()
 
@@ -11,10 +12,17 @@ const notes: Note[] = []
 
 app.get('/note/:id', function (req: Request, res: Response) {
 
-    const id = req.params.id.toString();
-    res.send(notes)
-    console.log(notes)
-
+    const id = req.params.id
+    const result = notes.find(el => el.id === id)
+    
+    if(result){
+        res.status(200).send(result)
+        console.log(result)
+    }
+    else{
+        res.status(404).send("Notatka nie istnieje")
+    }
+    
 })
 
 app.post('/note', function (req: Request, res: Response) {
@@ -40,7 +48,17 @@ app.post('/note', function (req: Request, res: Response) {
 
         console.log(noteWithId) // e.x. req.body.title 
         res.status(201).send(noteWithId)
+        console.log(notes)
     }
+})
+
+app.put('/note/:id', function (req: Request, res: Response) {
+
+    const id = req.params.id
+    const result = notes.find(el => el.id === id)
+    res.send(result)
+    console.log(result)
+    
 })
 
 app.listen(3000)
