@@ -10,11 +10,11 @@ app.use(express.json())
 
 const notes: Note[] = []
 
-app.get('/note/:id', function (req: Request, res: Response) {
+app.get('/get/note/:id', function (req: Request, res: Response) {
 
     const id = req.params.id
     const result = notes.find(el => el.id === id)
-    
+
     if(result){
         res.status(200).send(result)
         console.log(result)
@@ -25,7 +25,7 @@ app.get('/note/:id', function (req: Request, res: Response) {
     
 })
 
-app.post('/note', function (req: Request, res: Response) {
+app.post('/post/note', function (req: Request, res: Response) {
 
     const title = req.body.title
     const content = req.body.content
@@ -52,12 +52,17 @@ app.post('/note', function (req: Request, res: Response) {
     }
 })
 
-app.put('/note/:id', function (req: Request, res: Response) {
+app.delete('/delete/note/:id', function (req: Request, res: Response) {
 
     const id = req.params.id
     const result = notes.find(el => el.id === id)
-    res.send(result)
-    console.log(result)
+    const index = notes.indexOf(result!, 0);
+
+    if (index > -1) {
+    notes.splice(index, 1);
+}
+    res.send(notes)
+    console.log(notes)
     
 })
 
