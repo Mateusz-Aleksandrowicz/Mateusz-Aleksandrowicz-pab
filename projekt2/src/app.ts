@@ -118,6 +118,10 @@ app.listen(3000)
 
 // Tags CRUD
 
+app.get('/tags', function (req: Request, res: Response) { // getting all notes
+    res.status(200).send(tags)
+})
+
 app.post('/tag', function (req: Request, res: Response) {
 
     const name = req.body.name
@@ -129,11 +133,61 @@ app.post('/tag', function (req: Request, res: Response) {
     }
 
     const tagId = uuidv4() // random id
-    const tagFinish = { ...tag, id: tagId } // dodanie do obiektu "note" nowego param "id", "date"
-    notes.push(tagFinish)
+    const tagFinish = { ...tag, id: tagId } // dodanie do obiektu "tag" nowego param "id",
+    tags.push(tagFinish)
 
     console.log(tagFinish)
     res.status(201).send(tagFinish)
     console.log(tags)
 })
 
+app.get('/tag/:id', function (req: Request, res: Response) { // getting single tag by id
+    const id = req.params.id
+    const result = tags.find(el => el.id === id)
+
+    if (result) {
+        res.status(200).send(result)
+        console.log(result)
+    }
+    else {
+        res.status(404).send("Tag nie istnieje")
+    }
+
+})
+
+app.delete('/tag/:id', function (req: Request, res: Response) {
+
+    const id = req.params.id
+    const result = tags.find(el => el.id === id) // znalezienie tag z danym id
+    const index = tags.indexOf(result!, 0);
+
+    if (index > -1) {
+        tags.splice(index, 1);
+    }
+    res.status(204).send(tags)
+    console.log(tags)
+
+})
+
+app.put('/tag/:id', function (req: Request, res: Response) {
+    const id = req.params.id
+    const changeTag = req.body
+    const name = req.body.name
+
+    const result = tags.find(el => el.id === id)
+    const index = tags.indexOf(result!, 0);
+
+    if (name === undefined) {
+        res.status(404).send('Podaj poprawny tytuł!')
+        console.log("Podaj poprawny tytuł!")
+    }
+
+    if (index > -1) {
+        tags[index] = changeTag
+        res.status(204).send(tags)
+    }
+    else {
+        res.status(404).send("Tag nie istnieje")
+    }
+    console.log(tags)
+})
