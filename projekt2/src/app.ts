@@ -1,19 +1,28 @@
 import express from 'express'
 import { Request, Response } from 'express'
-import { Note } from './note'
+import { Note } from '../interfaces/note'
+import { Tag } from '../interfaces/tag'
 import { v4 as uuidv4 } from 'uuid'
 import { parse } from 'path'
 import { create } from 'domain'
 import { unwatchFile } from 'fs'
+import fs from 'fs'
 
 const app = express()
 
 app.use(express.json())
 
 const notes: Note[] = []
+const tags: Tag[] = []
 
-app.get('/note', function (req: Request, res: Response) { // getting all notes
-    res.status(200).send(notes)
+app.get('/notes', function (req: Request, res: Response) { // getting all notes
+    const jsonData = JSON.stringify(notes)
+    const data = fs.writeFile("./data/data.json", jsonData, function (err) {
+        if (err) {
+            res.status(400).send("Nie można pobrać listy")
+        }
+    })
+    res.status(200).send(data)
 })
 
 app.get('/note/:id', function (req: Request, res: Response) { // getting single note by id
@@ -32,7 +41,6 @@ app.get('/note/:id', function (req: Request, res: Response) { // getting single 
 
 app.post('/note', function (req: Request, res: Response) {
 
-    const id = req.body.id
     const title = req.body.title
     const content = req.body.content
     let createDate = req.body.createDate
@@ -106,3 +114,26 @@ app.put('/note/:id', function (req: Request, res: Response) {
 })
 
 app.listen(3000)
+
+
+// Tags CRUD
+
+app.post('/tag', function (req: Request, res: Response) {
+
+    const name = req.body.name
+    const tag = req.body;
+
+    if (name === undefined) {
+        res.status(400).send('Podaj poprawny tytuł!')
+        console.log("Podaj poprawny tytuł!")
+    }
+
+    const tagId = uuidv4() // random id
+    const tagFinish = { ...tag, id: tagId } // dodanie do obiektu "note" nowego param "id", "date"
+    notes.push(tagFinish)
+
+    console.log(tagFinish)
+    res.status(201).send(tagFinish)
+    console.log(tags)
+})
+
